@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Pharmacy.Database;
 using Pharmacy.Filters;
@@ -122,7 +120,7 @@ namespace Pharmacy.Controllers
             }
             else if (type == "PDF")
             {
-                return;
+                throw new NotImplementedException();
             }
         }
 

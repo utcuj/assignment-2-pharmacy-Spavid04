@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Pharmacy.Filters
 {
     public abstract class Filter<T>
     {
-        protected List<Predicate<T>> filters = new List<Predicate<T>>();
+        protected List<Predicate<T>> Filters = new List<Predicate<T>>();
 
         public IEnumerable<T> ApplyFilter(IEnumerable<T> source)
         {
             IEnumerable<T> result = source;
 
-            foreach (var filter in filters)
+            foreach (var filter in Filters)
             {
                 result = result.Where(x => filter(x) == true);
             }
@@ -24,14 +22,14 @@ namespace Pharmacy.Filters
 
         public void AddFilter(Predicate<T> predicate)
         {
-            filters.Add(predicate);
+            Filters.Add(predicate);
         }
 
         public bool Matches(T item)
         {
-            if (filters.Count == 0) return true;
+            if (Filters.Count == 0) return true;
 
-            return filters
+            return Filters
                 .Select(x => x(item))
                 .All(x => x == true);
         }

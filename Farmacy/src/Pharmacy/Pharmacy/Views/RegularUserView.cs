@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Pharmacy.Controllers;
 using Pharmacy.Models;
@@ -124,12 +119,12 @@ namespace Pharmacy.Views
         {
             if (!Regex.IsMatch(textBox8.Text, @"\w\w\d{8}"))
             {
-                MessageBox.Show("Invalid client identifier.");
+                MessageBox.Show("Invalid client identifier!");
                 return;
             }
 
             RegularUserController.SaveOrder(userId, textBox8.Text, cart);
-            MessageBox.Show("Success");
+            MessageBox.Show("Success!");
             cart.Clear();
             tabControl1.SelectedIndex = 0;
             RefreshTab1Fields();
