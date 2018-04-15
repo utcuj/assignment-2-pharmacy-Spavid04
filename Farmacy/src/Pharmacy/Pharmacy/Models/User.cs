@@ -23,5 +23,10 @@ namespace Pharmacy.Models
         public UserType UserType { get; set; }
 
         public virtual List<Invoice> IssuedInvoices { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Name}  -  {Username}";
+        }
     }
 }

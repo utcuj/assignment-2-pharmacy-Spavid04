@@ -52,11 +52,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AdministratorController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RegularUserController.cs" />
     <Compile Include="Database\ConnectionFactory.cs" />
     <Compile Include="Database\PharmacyDbContext.cs" />
     <Compile Include="Filters\Filter.cs" />
-    <Compile Include="Filters\MedicationFilter.cs" />
+    <Compile Include="Filters\StandardMedicationFilter.cs" />
+    <Compile Include="Filters\StandardUserFilter.cs" />
     <Compile Include="Migrations\201804131208195_InitialCreation.cs" />
     <Compile Include="Migrations\201804131208195_InitialCreation.Designer.cs">
       <DependentUpon>201804131208195_InitialCreation.cs</DependentUpon>
@@ -65,10 +68,23 @@
     <Compile Include="Models\Invoice.cs" />
     <Compile Include="Models\InvoiceContents.cs" />
     <Compile Include="Models\Medication.cs" />
+    <Compile Include="Models\MedicationCollection.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities.cs" />
+    <Compile Include="Views\AdmisitratorView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\AdmisitratorView.Designer.cs">
+      <DependentUpon>AdmisitratorView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoginView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\LoginView.Designer.cs">
+      <DependentUpon>LoginView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\RegularUserView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -87,6 +103,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Views\AdmisitratorView.resx">
+      <DependentUpon>AdmisitratorView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\LoginView.resx">
+      <DependentUpon>LoginView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\RegularUserView.resx">
       <DependentUpon>RegularUserView.cs</DependentUpon>
     </EmbeddedResource>
@@ -104,6 +126,5 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
