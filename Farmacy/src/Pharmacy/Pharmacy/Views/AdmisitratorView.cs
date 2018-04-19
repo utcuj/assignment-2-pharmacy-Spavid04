@@ -124,6 +124,21 @@ namespace Pharmacy.Views
             }
         }
 
+        private void button10_Click(object sender, EventArgs e)
+        {
+            if (lastMedicationId == -1)
+            {
+                return;
+            }
+
+            Medication m = AdministratorController.GetMedication(lastMedicationId);
+
+            IngredientsView form = new IngredientsView(m.Ingredients);
+            form.ShowDialog();
+
+            textBox7.Text = form.ingredients;
+        }
+
         #endregion
 
         #region Tab2
