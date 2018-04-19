@@ -25,7 +25,7 @@ namespace Pharmacy.Controllers
             return dbContext.Medications.First(x => x.Id == id);
         }
 
-        public static void SaveOrder(int userId, string client, Dictionary<int, int> contents)
+        public static Invoice SaveOrder(int userId, string client, Dictionary<int, int> contents)
         {
             var dbContext = ConnectionFactory.GetDbContext("Pharmacy") as PharmacyDbContext;
 
@@ -43,7 +43,7 @@ namespace Pharmacy.Controllers
 
                 ic.Amount = item.Value;
                 ic.Invoice = invoice;
-                ic.Medication = dbContext.Medications.First(x=>x.Id==item.Key);
+                ic.Medication = dbContext.Medications.First(x => x.Id == item.Key);
 
                 dbContext.Medications.First(x => x.Id == item.Key).Stock -= item.Value;
 
@@ -51,6 +51,8 @@ namespace Pharmacy.Controllers
             }
 
             dbContext.SaveChanges();
+
+            return invoice;
         }
     }
 }
