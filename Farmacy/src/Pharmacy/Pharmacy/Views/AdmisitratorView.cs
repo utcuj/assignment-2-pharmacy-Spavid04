@@ -126,12 +126,15 @@ namespace Pharmacy.Views
 
         private void button10_Click(object sender, EventArgs e)
         {
-            if (lastMedicationId == -1)
+            Medication m = new Medication();
+            if (lastMedicationId != -1)
             {
-                return;
+                m = AdministratorController.GetMedication(lastMedicationId);
             }
-
-            Medication m = AdministratorController.GetMedication(lastMedicationId);
+            else
+            {
+                m.Ingredients = textBox7.Text;
+            }
 
             IngredientsView form = new IngredientsView(m.Ingredients);
             form.ShowDialog();
@@ -252,7 +255,11 @@ namespace Pharmacy.Views
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            if (tabControl1.SelectedIndex == 0)
+            {
+                RefreshTab1List();
+                RefreshTab1Fields();
+            }
         }
     }
 }

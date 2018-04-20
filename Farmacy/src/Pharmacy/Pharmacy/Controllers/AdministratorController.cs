@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml.Serialization;
+using PdfSharp.Drawing;
+using PdfSharp.Drawing.Layout;
+using PdfSharp.Pdf;
 using Pharmacy.Database;
 using Pharmacy.Filters;
 using Pharmacy.Models;
@@ -111,7 +115,7 @@ namespace Pharmacy.Controllers
                         sw.WriteLine(String.Join(",", "Id", "Name", "Manufacturer", "Ingredients", "Price",
                             "Last sold date"));
 
-                        foreach (var medication in dbContext.Medications.Where(x=>x.Stock==0))
+                        foreach (var medication in dbContext.Medications.Where(x => x.Stock == 0))
                         {
                             sw.WriteLine(MedicationToCsvRow(medication));
                         }
@@ -120,11 +124,33 @@ namespace Pharmacy.Controllers
             }
             else if (type == "PDF")
             {
-                throw new NotImplementedException();
+                using (FileStream fs = new FileStream("report.pdf", FileMode.Create))
+                {
+                    PdfDocument doc = new PdfDocument(fs);
+                    
+                    XFont font = new XFont("Verdana", 20);
+
+                    var dbContext = ConnectionFactory.GetDbContext("Pharmacy") as PharmacyDbContext;
+                    StringBuilder sb = new StringBuilder(String.Join(" - ", "Id", "Name", "Manufacturer", "Ingredients",
+                                                             "Price", "Last sold date") + Environment.NewLine);
+
+                    foreach (var medication in dbContext.Medications.Where(x => x.Stock == 0))
+                    {
+                        sb.AppendLine(MedicationToCsvRow(medication, " - "));
+                    }
+
+                    PdfPage page = doc.AddPage();
+                    XGraphics graph = XGraphics.FromPdfPage(page);
+                    XTextFormatter formatter = new XTextFormatter(graph);
+                    formatter.DrawString(sb.ToString(), font, XBrushes.Black,
+                        new XRect(0, 0, page.Width.Point, page.Height.Point), XStringFormats.TopLeft);
+
+                    doc.Close();
+                }
             }
         }
 
-        private static string MedicationToCsvRow(Medication m)
+        private static string MedicationToCsvRow(Medication m, string separator = ",")
         {
             var dbContext = ConnectionFactory.GetDbContext("Pharmacy") as PharmacyDbContext;
 
@@ -138,10 +164,10 @@ namespace Pharmacy.Controllers
                 m.Manufacturer,
                 m.Ingredients,
                 m.Price.ToString(),
-                lastInvoice?.Date.ToLocalTime().ToString() ?? ""
+                lastInvoice?.Date.ToLocalTime().ToString() ?? "never sold"
             };
 
-            return String.Join(",", cells.Select(x => x.EscapeCsvCell()));
+            return String.Join(separator, cells.Select(x => x.EscapeCsvCell()));
         }
 
         public static void ExportMedication()
